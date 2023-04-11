@@ -24,7 +24,8 @@ import pydeck as pdk
 import streamlit as st
 
 # SETTING PAGE CONFIG TO WIDE MODE AND ADDING A TITLE AND FAVICON
-st.set_page_config(layout="wide", page_title="NYC Ridesharing Demo", page_icon=":taxi:")
+st.set_page_config(
+    layout="wide", page_title="Criminal Incidence", page_icon=":taxi:")
 
 
 # LOAD DATA ONCE
@@ -98,7 +99,8 @@ def histdata(df, hr):
         (df["date/time"].dt.hour >= hr) & (df["date/time"].dt.hour < (hr + 1))
     ]
 
-    hist = np.histogram(filtered["date/time"].dt.minute, bins=60, range=(0, 60))[0]
+    hist = np.histogram(
+        filtered["date/time"].dt.minute, bins=60, range=(0, 60))[0]
 
     return pd.DataFrame({"minute": range(60), "pickups": hist})
 
@@ -161,7 +163,8 @@ with row2_1:
 
 with row2_2:
     st.write("**La Guardia Airport**")
-    map(filterdata(data, hour_selected), la_guardia[0], la_guardia[1], zoom_level)
+    map(filterdata(data, hour_selected),
+        la_guardia[0], la_guardia[1], zoom_level)
 
 with row2_3:
     st.write("**JFK Airport**")
