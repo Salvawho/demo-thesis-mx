@@ -31,9 +31,9 @@ st.set_page_config(
 # LOAD DATA ONCE
 @st.cache_resource
 def load_data():
-    path = "uber-raw-data-sep14.csv.gz"
+    path = "fullData.csv"
     if not os.path.isfile(path):
-        path = f"https://github.com/streamlit/demo-uber-nyc-pickups/raw/main/{path}"
+        path = f"https://github.com/Salvawho/demo-thesis-mx/blob/main/{path}"
 
     data = pd.read_csv(
         path,
@@ -44,7 +44,8 @@ def load_data():
             "lon",
         ],  # specify names directly since they don't change
         skiprows=1,  # don't read header since names specified directly
-        usecols=[0, 1, 2],  # doesn't load last column, constant value "B02512"
+        # doesn't load last column, constant value "B02512"
+        usecols=[0, 1, 2, 3],
         parse_dates=[
             "date/time"
         ],  # set as datetime instead of converting after the fact
@@ -146,33 +147,33 @@ with row1_2:
     )
 
 # LAYING OUT THE MIDDLE SECTION OF THE APP WITH THE MAPS
-row2_1, row2_2, row2_3, row2_4 = st.columns((2, 1, 1, 1))
+# row2_1, row2_2, row2_3, row2_4 = st.columns((2, 1, 1, 1))
 
 # SETTING THE ZOOM LOCATIONS FOR THE AIRPORTS
-la_guardia = [40.7900, -73.8700]
-jfk = [40.6650, -73.7821]
-newark = [40.7090, -74.1805]
-zoom_level = 12
-midpoint = mpoint(data["lat"], data["lon"])
+# la_guardia = [40.7900, -73.8700]
+# jfk = [40.6650, -73.7821]
+# newark = [40.7090, -74.1805]
+# zoom_level = 12
+# midpoint = mpoint(data["lat"], data["lon"])
 
-with row2_1:
-    st.write(
-        f"""**All New York City from {hour_selected}:00 and {(hour_selected + 1) % 24}:00**"""
-    )
-    map(filterdata(data, hour_selected), midpoint[0], midpoint[1], 11)
+# with row2_1:
+#     st.write(
+#         f"""**All New York City from {hour_selected}:00 and {(hour_selected + 1) % 24}:00**"""
+#     )
+#     map(filterdata(data, hour_selected), midpoint[0], midpoint[1], 11)
 
-with row2_2:
-    st.write("**La Guardia Airport**")
-    map(filterdata(data, hour_selected),
-        la_guardia[0], la_guardia[1], zoom_level)
+# with row2_2:
+#     st.write("**La Guardia Airport**")
+#     map(filterdata(data, hour_selected),
+#         la_guardia[0], la_guardia[1], zoom_level)
 
-with row2_3:
-    st.write("**JFK Airport**")
-    map(filterdata(data, hour_selected), jfk[0], jfk[1], zoom_level)
+# with row2_3:
+#     st.write("**JFK Airport**")
+#     map(filterdata(data, hour_selected), jfk[0], jfk[1], zoom_level)
 
-with row2_4:
-    st.write("**Newark Airport**")
-    map(filterdata(data, hour_selected), newark[0], newark[1], zoom_level)
+# with row2_4:
+#     st.write("**Newark Airport**")
+#     map(filterdata(data, hour_selected), newark[0], newark[1], zoom_level)
 
 # CALCULATING DATA FOR THE HISTOGRAM
 chart_data = histdata(data, hour_selected)
