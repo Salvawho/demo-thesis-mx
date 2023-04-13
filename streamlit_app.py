@@ -58,7 +58,7 @@ def load_data():
 def map(data, lat, lon, zoom):
     st.write(
         pdk.Deck(
-            map_style="mapbox://styles/mapbox/light-v9",
+            map_style="mapbox://styles/mapbox/outdoors-v12",
             initial_view_state={
                 "latitude": lat,
                 "longitude": lon,
@@ -133,7 +133,7 @@ def update_query_params():
 with row1_1:
     st.title("Criminal Incidence")
     hour_selected = st.slider(
-        "Select hour of pickup", 0, 23, key="pickup_hour", on_change=update_query_params
+        "Select hour of crime", 0, 23, key="pickup_hour", on_change=update_query_params
     )
 
 
@@ -141,8 +141,8 @@ with row1_2:
     st.write(
         """
     ##
-    Examining how Uber pickups vary over time in New York City's and at its major regional airports.
-    By sliding the slider on the left you can view different slices of time and explore different transportation trends.
+    Examining the criminal incidence on the highway CDMX - Veracruz for the perior 2019-2021
+    By sliding the slider on the left you can view different slices of time and explore different trends.
     """
     )
 
@@ -150,29 +150,29 @@ with row1_2:
 row2_1, row2_2, row2_3, row2_4 = st.columns((2, 1, 1, 1))
 
 # SETTING THE ZOOM LOCATIONS FOR THE AIRPORTS
-la_guardia = [40.7900, -73.8700]
-jfk = [40.6650, -73.7821]
-newark = [40.7090, -74.1805]
+la_guardia = [18.819758, -97.239108]
+jfk = [18.855261, -97.278515]
+newark = [18.828500, -97.323853]
 zoom_level = 12
 midpoint = mpoint(data["lat"], data["lon"])
 
 with row2_1:
     st.write(
-        f"""**All New York City from {hour_selected}:00 and {(hour_selected + 1) % 24}:00**"""
+        f"""**All CDMX - Veracruz crimes from {hour_selected}:00 and {(hour_selected + 1) % 24}:00**"""
     )
     map(filterdata(data, hour_selected), midpoint[0], midpoint[1], 11)
 
 with row2_2:
-    st.write("**La Guardia Airport**")
+    st.write("**Maltrata**")
     map(filterdata(data, hour_selected),
         la_guardia[0], la_guardia[1], zoom_level)
 
 with row2_3:
-    st.write("**JFK Airport**")
+    st.write("**Magueyes**")
     map(filterdata(data, hour_selected), jfk[0], jfk[1], zoom_level)
 
 with row2_4:
-    st.write("**Newark Airport**")
+    st.write("**Boca del Monte")
     map(filterdata(data, hour_selected), newark[0], newark[1], zoom_level)
 
 # CALCULATING DATA FOR THE HISTOGRAM
@@ -180,7 +180,7 @@ chart_data = histdata(data, hour_selected)
 
 # LAYING OUT THE HISTOGRAM SECTION
 st.write(
-    f"""**Breakdown of rides per minute between {hour_selected}:00 and {(hour_selected + 1) % 24}:00**"""
+    f"""**Breakdown of crimes per minute between {hour_selected}:00 and {(hour_selected + 1) % 24}:00**"""
 )
 
 st.altair_chart(
